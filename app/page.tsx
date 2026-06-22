@@ -1,17 +1,30 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import { terms, CATEGORIES, CATEGORY_LABELS, CATEGORY_COLORS } from '@/lib/terms'
+import { terms, Term, CATEGORIES, CATEGORY_LABELS, CATEGORY_COLORS } from '@/lib/terms'
+import { getTermsFromFirestore } from '@/lib/terms-firestore'
 
 export default function Home() {
   const [query, setQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [awsOnly, setAwsOnly] = useState(false)
+  // Firestoreから追加された用語（静的データと合わせて表示）
+  const [firestoreTerms, setFirestoreTerms] = useState<Term[]>([])
+
+  // アプリ起動時にFirestoreから追加用語を読み込む
+  useEffect(() => {
+    getTermsFromFirestore()
+      .then(setFirestoreTerms)
+      .catch((err) => console.error('Firestore読み込みエラー:', err))
+  }, [])
+
+  // 静的データ + Firestore追加分をマージ
+  const allTerms = useMemo(() => [...terms, ...firestoreTerms], [firestoreTerms])
 
   // 検索・フィルター処理
   const filtered = useMemo(() => {
-    return terms.filter((t) => {
+    return allTerms.filter((t) => {
       const q = query.toLowerCase()
       const matchQuery =
         q === '' ||
@@ -22,7 +35,7 @@ export default function Home() {
       const matchAws = !awsOnly || t.awsExam
       return matchQuery && matchCategory && matchAws
     })
-  }, [query, selectedCategory, awsOnly])
+  }, [query, selectedCategory, awsOnly, allTerms])
 
   const handleCategory = (cat: string | null) => {
     setSelectedCategory(cat)
@@ -42,9 +55,17 @@ export default function Home() {
         }}
       >
         <div style={{ maxWidth: '640px', margin: '0 auto', padding: '12px 16px 0' }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1e293b', marginBottom: '10px' }}>
-            📚 ARI用語ノート
-          </h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1e293b' }}>
+              📚 ARI用語ノート
+            </h1>
+            <Link href="/admin" style={{
+              padding: '6px 14px', borderRadius: '8px', backgroundColor: '#3b82f6',
+              color: '#ffffff', textDecoration: 'none', fontSize: '14px', fontWeight: '600',
+            }}>
+              ＋ 追加
+            </Link>
+          </div>
 
           {/* 検索バー */}
           <input
@@ -127,7 +148,7 @@ export default function Home() {
       {/* 用語リスト */}
       <main style={{ maxWidth: '640px', margin: '0 auto', padding: '16px' }}>
         <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '12px' }}>
-          {filtered.length}件
+          {filtered.length}件（うちFirestore追加: {firestoreTerms.length}件）
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {filtered.map((term) => {
