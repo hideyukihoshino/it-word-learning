@@ -42,7 +42,7 @@ export default function Home() {
         }}
       >
         <div style={{ maxWidth: '640px', margin: '0 auto', padding: '12px 16px 0' }}>
-          <h1 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1e293b', marginBottom: '10px' }}>
+          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1e293b', marginBottom: '10px' }}>
             📚 ARI用語ノート
           </h1>
 
@@ -58,7 +58,7 @@ export default function Home() {
               borderRadius: '9999px',
               border: '1px solid #cbd5e1',
               backgroundColor: '#f1f5f9',
-              fontSize: '14px',
+              fontSize: '16px',
               outline: 'none',
               boxSizing: 'border-box',
               marginBottom: '10px',
@@ -73,7 +73,7 @@ export default function Home() {
                 style={{
                   padding: '4px 12px',
                   borderRadius: '9999px',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   fontWeight: '500',
                   border: 'none',
                   cursor: 'pointer',
@@ -108,7 +108,7 @@ export default function Home() {
                 style={{
                   padding: '4px 12px',
                   borderRadius: '9999px',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   fontWeight: '500',
                   border: 'none',
                   cursor: 'pointer',
@@ -126,7 +126,7 @@ export default function Home() {
 
       {/* 用語リスト */}
       <main style={{ maxWidth: '640px', margin: '0 auto', padding: '16px' }}>
-        <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '12px' }}>
+        <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '12px' }}>
           {filtered.length}件
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -146,22 +146,22 @@ export default function Home() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#1e293b' }}>
+                    <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#1e293b' }}>
                       {term.term}
                     </span>
                     {term.awsExam && (
-                      <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '9999px', backgroundColor: '#fff7ed', color: '#c2410c', fontWeight: '600' }}>
+                      <span style={{ fontSize: '12px', padding: '2px 8px', borderRadius: '9999px', backgroundColor: '#fff7ed', color: '#c2410c', fontWeight: '600' }}>
                         ★AWS
                       </span>
                     )}
                   </div>
                   {term.reading && (
-                    <p style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>{term.reading}</p>
+                    <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>{term.reading}</p>
                   )}
-                  <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px', lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '8px', lineHeight: '1.5' }}>
                     {shortDesc}
                   </p>
-                  <span style={{ fontSize: '11px', padding: '2px 10px', borderRadius: '9999px', backgroundColor: colors.bg, color: colors.text, fontWeight: '500' }}>
+                  <span style={{ fontSize: '12px', padding: '2px 10px', borderRadius: '9999px', backgroundColor: colors.bg, color: colors.text, fontWeight: '500' }}>
                     {CATEGORY_LABELS[term.category]}
                   </span>
                 </div>

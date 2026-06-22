@@ -38,7 +38,7 @@ export default async function TermPage(props: PageProps<'/terms/[id]'>) {
           <Link
             href="/"
             style={{
-              fontSize: '14px',
+              fontSize: '16px',
               color: '#64748b',
               textDecoration: 'none',
               display: 'flex',
@@ -48,7 +48,7 @@ export default async function TermPage(props: PageProps<'/terms/[id]'>) {
           >
             ← 戻る
           </Link>
-          <span style={{ fontSize: '13px', color: '#94a3b8' }}>ARI用語ノート</span>
+          <span style={{ fontSize: '15px', color: '#94a3b8' }}>ARI用語ノート</span>
         </div>
       </header>
 
@@ -65,7 +65,7 @@ export default async function TermPage(props: PageProps<'/terms/[id]'>) {
           {/* 用語名 + バッジ */}
           <div style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' }}>
-              <h1 style={{ fontSize: '22px', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
+              <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
                 {term.term}
               </h1>
               {term.awsExam && (
@@ -86,7 +86,7 @@ export default async function TermPage(props: PageProps<'/terms/[id]'>) {
 
             {/* 読み方 */}
             {term.reading && (
-              <p style={{ fontSize: '13px', color: '#94a3b8', margin: '0 0 10px' }}>
+              <p style={{ fontSize: '15px', color: '#94a3b8', margin: '0 0 10px' }}>
                 {term.reading}
               </p>
             )}
@@ -126,7 +126,7 @@ export default async function TermPage(props: PageProps<'/terms/[id]'>) {
             </p>
             <p
               style={{
-                fontSize: '14px',
+                fontSize: '16px',
                 color: '#374151',
                 lineHeight: '1.8',
                 whiteSpace: 'pre-line',
@@ -161,7 +161,7 @@ export default async function TermPage(props: PageProps<'/terms/[id]'>) {
               </p>
               <p
                 style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
                   color: '#9a3412',
                   lineHeight: '1.7',
                   margin: 0,
