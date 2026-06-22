@@ -5,8 +5,18 @@ import Link from 'next/link'
 import { addTermToFirestore } from '@/lib/terms-firestore'
 import { CATEGORIES, CATEGORY_COLORS } from '@/lib/terms'
 
-// 初期フォーム状態
-const initialForm = {
+// カテゴリの型エイリアス
+type Category = typeof CATEGORIES[number]
+
+// 初期フォーム状態（categoryはCategoryユニオン型として明示）
+const initialForm: {
+  term: string
+  reading: string
+  category: Category
+  description: string
+  awsExam: boolean
+  examPoint: string
+} = {
   term: '',
   reading: '',
   category: CATEGORIES[0],
@@ -137,7 +147,7 @@ export default function AdminPage() {
               <label style={labelStyle}>カテゴリ</label>
               <select
                 value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                onChange={(e) => setForm({ ...form, category: e.target.value as Category })}
                 style={{ ...inputStyle, cursor: 'pointer' }}
               >
                 {CATEGORIES.map((c) => (
