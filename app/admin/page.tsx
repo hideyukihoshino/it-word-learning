@@ -36,14 +36,18 @@ export default function AdminPage() {
 
   // 認証状態を監視 + リダイレクト後の結果を取得
   useEffect(() => {
-    // Googleリダイレクト後のサインイン結果を処理
-    getRedirectResult(auth).catch((err) => console.error('リダイレクト結果エラー:', err))
-
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u)
-      setAuthLoading(false)
-    })
-    return () => unsubscribe()
+    async function init() {
+      try {
+        await getRedirectResult(auth)
+      } catch (err) {
+        console.error('リダイレクト結果エラー:', err)
+      }
+      onAuthStateChanged(auth, (u) => {
+        setUser(u)
+        setAuthLoading(false)
+      })
+    }
+    init()
   }, [])
 
   // Googleサインイン（リダイレクト方式 - Safari/モバイル対応）
@@ -79,8 +83,9 @@ export default function AdminPage() {
       setForm(initialForm)
       setTimeout(() => setStatus('idle'), 3000)
     } catch (err) {
+      const msg = err instanceof Error ? err.message : '保存に失敗しました。'
       console.error(err)
-      setErrorMsg('保存に失敗しました。もう一度試してください。')
+      setErrorMsg(msg)
       setStatus('error')
     }
   }
