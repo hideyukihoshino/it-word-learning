@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth'
+import { signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, User } from 'firebase/auth'
 import { auth, googleProvider } from '@/lib/firebase'
 import { addTermToFirestore } from '@/lib/terms-firestore'
 import { CATEGORIES, CATEGORY_COLORS } from '@/lib/terms'
@@ -34,8 +34,11 @@ export default function AdminPage() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
-  // 認証状態を監視
+  // 認証状態を監視 + リダイレクト後の結果を取得
   useEffect(() => {
+    // Googleリダイレクト後のサインイン結果を処理
+    getRedirectResult(auth).catch((err) => console.error('リダイレクト結果エラー:', err))
+
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u)
       setAuthLoading(false)
@@ -43,9 +46,10 @@ export default function AdminPage() {
     return () => unsubscribe()
   }, [])
 
+  // Googleサインイン（リダイレクト方式 - Safari/モバイル対応）
   async function handleSignIn() {
     try {
-      await signInWithPopup(auth, googleProvider)
+      await signInWithRedirect(auth, googleProvider)
     } catch (err) {
       console.error('サインインエラー:', err)
     }
