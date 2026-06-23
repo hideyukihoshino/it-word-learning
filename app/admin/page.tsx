@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, User } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, User } from 'firebase/auth'
 import { auth, googleProvider } from '@/lib/firebase'
 import { addTermToFirestore } from '@/lib/terms-firestore'
 import { CATEGORIES, CATEGORY_COLORS } from '@/lib/terms'
@@ -50,12 +50,18 @@ export default function AdminPage() {
     init()
   }, [])
 
-  // Googleサインイン（リダイレクト方式 - Safari/モバイル対応）
+  // Googleサインイン（ポップアップ優先 → ブロック時はリダイレクト）
   async function handleSignIn() {
     try {
-      await signInWithRedirect(auth, googleProvider)
-    } catch (err) {
-      console.error('サインインエラー:', err)
+      await signInWithPopup(auth, googleProvider)
+    } catch (err: unknown) {
+      const code = (err as { code?: string }).code
+      if (code === 'auth/popup-blocked' || code === 'auth/popup-closed-by-user') {
+        // Safariなどポップアップがブロックされたらリダイレクト方式に切り替え
+        await signInWithRedirect(auth, googleProvider)
+      } else {
+        console.error('サインインエラー:', err)
+      }
     }
   }
 
